@@ -1,0 +1,45 @@
+<div class="orderbook">
+    <!-- Spread Info -->
+    <div class="spread-info">
+        {% if spread %}
+        <span class="spread">Spread: {{ spread }}</span>
+        <span class="mid">Mid: {{ ((best_bid + best_ask) / 2)|round(2) }}</span>
+        {% else %}
+        <span class="spread">No spread (empty book)</span>
+        {% endif %}
+    </div>
+
+    <div class="book-container">
+        <!-- Asks (Sell Orders) -->
+        <div class="book-side asks">
+            <div class="book-header">
+                <span>Price</span>
+                <span>Quantity</span>
+            </div>
+            {% for price, qty in asks|reverse %}
+            {% set bar_width = [qty / 5, 100]|min %}
+            <div class="book-row ask">
+                <span class="price">{{ price }}</span>
+                <span class="quantity">{{ qty }}</span>
+                <div class="bar" style="width: {{ bar_width }}%"></div>
+            </div>
+            {% else %}
+            <div class="book-row empty">No asks</div>
+            {% endfor %}
+        </div>
+
+        <!-- Bids (Buy Orders) -->
+        <div class="book-side bids">
+            {% for price, qty in bids %}
+            {% set bar_width = [qty / 5, 100]|min %}
+            <div class="book-row bid">
+                <span class="price">{{ price }}</span>
+                <span class="quantity">{{ qty }}</span>
+                <div class="bar" style="width: {{ bar_width }}%"></div>
+            </div>
+            {% else %}
+            <div class="book-row empty">No bids</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLOB Trading Interface</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Central Limit Order Book</h1>
+            <p class="subtitle">Educational Trading Interface</p>
+        </header>
+
+        <main>
+            <div class="trading-panel">
+                <!-- Order Entry Form -->
+                <section class="order-form-section">
+                    <h2>Place Order</h2>
+                    <form hx-post="/order" hx-target="#trading-result" hx-swap="innerHTML">
+                        <div class="form-group">
+                            <label>Side</label>
+                            <div class="button-group">
+                                <input type="radio" id="side-buy" name="side" value="buy" checked>
+                                <label for="side-buy" class="btn btn-buy">BUY</label>
+                                <input type="radio" id="side-sell" name="side" value="sell">
+                                <label for="side-sell" class="btn btn-sell">SELL</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Order Type</label>
+                            <div class="button-group">
+                                <input type="radio" id="type-limit" name="order_type" value="limit" checked>
+                                <label for="type-limit" class="btn">LIMIT</label>
+                                <input type="radio" id="type-market" name="order_type" value="market">
+                                <label for="type-market" class="btn">MARKET</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="number" id="quantity" name="quantity" min="1" value="100" required>
+                        </div>
+
+                        <div class="form-group" id="price-group">
+                            <label for="price">Price</label>
+                            <input type="text" id="price" name="price" placeholder="100.50" value="100.50">
+                        </div>
+
+                        <button type="submit" class="btn btn-submit">Submit Order</button>
+                    </form>
+
+                    <div id="trading-result"></div>
+                </section>
+
+                <!-- Order Book Display -->
+                <section class="orderbook-section">
+                    <div class="orderbook-header">
+                        <h2>Order Book</h2>
+                        <button hx-post="/reset" hx-target="#orderbook" hx-swap="innerHTML" class="btn btn-small">
+                            Reset Book
+                        </button>
+                    </div>
+                    <div id="orderbook">
+                        {% include "partials/orderbook.html" %}
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer>
+            <p>CLOB Demo - Educational Purpose Only</p>
+        </footer>
+    </div>
+
+    <script>
+        // Toggle price field visibility based on order type
+        document.querySelectorAll('input[name="order_type"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const priceGroup = document.getElementById('price-group');
+                priceGroup.style.display = this.value === 'market' ? 'none' : 'block';
+            });
+        });
+    </script>
+</body>
+</html>

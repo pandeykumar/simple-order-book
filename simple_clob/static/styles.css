@@ -1,0 +1,352 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #21262d;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --border-color: #30363d;
+    --green: #238636;
+    --green-light: #2ea043;
+    --red: #da3633;
+    --red-light: #f85149;
+    --blue: #58a6ff;
+    --green-bg: rgba(35, 134, 54, 0.15);
+    --red-bg: rgba(218, 54, 51, 0.15);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    text-align: center;
+    padding: 30px 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+}
+
+/* Main Layout */
+.trading-panel {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 30px;
+}
+
+@media (max-width: 900px) {
+    .trading-panel {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Order Form Section */
+.order-form-section {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.order-form-section h2 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input[type="number"],
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--blue);
+}
+
+/* Button Group (Radio Buttons as Buttons) */
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+.button-group input[type="radio"] {
+    display: none;
+}
+
+.button-group label.btn {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    transition: all 0.2s;
+}
+
+.button-group input[type="radio"]:checked + label.btn {
+    border-color: var(--blue);
+    background: rgba(88, 166, 255, 0.1);
+}
+
+.button-group input[type="radio"]:checked + label.btn-buy {
+    border-color: var(--green);
+    background: var(--green-bg);
+    color: var(--green-light);
+}
+
+.button-group input[type="radio"]:checked + label.btn-sell {
+    border-color: var(--red);
+    background: var(--red-bg);
+    color: var(--red-light);
+}
+
+/* Submit Button */
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-submit:hover {
+    background: #4c9aed;
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.btn-small:hover {
+    background: var(--border-color);
+}
+
+/* Alerts */
+.alert {
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 20px;
+}
+
+.alert-success {
+    background: var(--green-bg);
+    border: 1px solid var(--green);
+    color: var(--green-light);
+}
+
+.alert-error {
+    background: var(--red-bg);
+    border: 1px solid var(--red);
+    color: var(--red-light);
+}
+
+.alert-info {
+    background: rgba(88, 166, 255, 0.1);
+    border: 1px solid var(--blue);
+    color: var(--blue);
+}
+
+.trade-list {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.trade-list li {
+    margin: 5px 0;
+}
+
+/* Order Book Section */
+.orderbook-section {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.orderbook-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.orderbook-header h2 {
+    font-size: 1.2rem;
+}
+
+/* Order Book Display */
+.orderbook {
+    font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+.spread-info {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 10px;
+    background: var(--bg-tertiary);
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 0.85rem;
+}
+
+.spread-info .spread {
+    color: var(--text-secondary);
+}
+
+.spread-info .mid {
+    color: var(--blue);
+}
+
+.book-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.book-side {
+    margin-bottom: 10px;
+}
+
+.book-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.book-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 8px 12px;
+    position: relative;
+    border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.book-row .bar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    opacity: 0.2;
+    z-index: 0;
+}
+
+.book-row.ask .bar {
+    background: var(--red);
+}
+
+.book-row.bid .bar {
+    background: var(--green);
+}
+
+.book-row .price,
+.book-row .quantity {
+    position: relative;
+    z-index: 1;
+}
+
+.book-row.ask .price {
+    color: var(--red-light);
+}
+
+.book-row.bid .price {
+    color: var(--green-light);
+}
+
+.book-row .quantity {
+    text-align: right;
+}
+
+.book-row.empty {
+    color: var(--text-secondary);
+    font-style: italic;
+    text-align: center;
+    display: block;
+}
+
+/* Asks section - reverse visual order so lowest ask is at bottom */
+.asks {
+    display: flex;
+    flex-direction: column;
+}
+
+.asks .book-header {
+    order: -1;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 30px;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}

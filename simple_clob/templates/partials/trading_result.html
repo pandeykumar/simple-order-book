@@ -1,0 +1,24 @@
+{% if error %}
+<div class="alert alert-error">
+    <strong>Error:</strong> {{ error }}
+</div>
+{% elif trades %}
+<div class="alert alert-success">
+    <strong>Order Executed!</strong>
+    <ul class="trade-list">
+        {% for trade in trades %}
+        <li>Filled {{ trade.quantity }} @ {{ trade.price }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% else %}
+<div class="alert alert-info">
+    <strong>Order Added to Book</strong>
+    <p>No immediate match - order is resting in the book.</p>
+</div>
+{% endif %}
+
+<!-- Out-of-band swap to update the order book -->
+<div id="orderbook" hx-swap-oob="true">
+    {% include "partials/orderbook.html" %}
+</div>
