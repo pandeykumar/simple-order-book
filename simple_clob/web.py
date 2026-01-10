@@ -1,5 +1,6 @@
 """FastAPI web application for the CLOB."""
 
+import threading
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Optional
@@ -22,7 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=BASE_DIR / "templates")
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 
-# Global order book instance (in production, use proper state management)
+# Global order book instance with thread-safe access
+# Lock for replacing global state (reset endpoint)
+_state_lock = threading.Lock()
 order_book: OrderBook
 engine: MatchingEngine
 
@@ -123,10 +126,15 @@ async def submit_order(
 
 @app.post("/reset", response_class=HTMLResponse)
 async def reset_book(request: Request):
-    """Reset the order book to initial sample data."""
+    """Reset the order book to initial sample data (thread-safe)."""
     global order_book, engine
-    order_book, engine = create_sample_book()
 
+    with _state_lock:
+        new_book, new_engine = create_sample_book()
+        order_book = new_book
+        engine = new_engine
+
+    # Read operations are safe after assignment
     bids, asks = order_book.get_book_depth(10)
     return templates.TemplateResponse(
         "partials/orderbook.html",
