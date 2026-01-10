@@ -7,6 +7,7 @@ An educational implementation of a Central Limit Order Book in Python. Demonstra
 - **Price-Time Priority Matching**: Best price first, then FIFO within price level
 - **Order Types**: Limit orders and market orders
 - **Decimal Precision**: Uses Python `Decimal` for accurate price handling
+- **Thread-Safe**: Read-write locking enables concurrent order processing from multiple clients
 - **Web Interface**: FastAPI backend with HTMX-powered frontend
 - **CLI Demo**: Command-line demonstration of matching scenarios
 
@@ -62,6 +63,7 @@ Order → MatchingEngine.process_order() → Trade[]
 | **OrderBook** | `orderbook.py` | Maintains bid/ask sides using `SortedDict` with FIFO queues per price level |
 | **MatchingEngine** | `matching_engine.py` | Processes incoming orders against the book |
 | **Trade** | `trade.py` | Immutable record of executed match |
+| **RWLock** | `rwlock.py` | Read-write lock for thread-safe concurrent access |
 
 ### Key Design Decisions
 
@@ -69,6 +71,14 @@ Order → MatchingEngine.process_order() → Trade[]
 - **Price-time priority**: Best price matched first, then earliest order at that price
 - **Price improvement**: Trades execute at the resting order's price (aggressor may get a better price)
 - **Market order behavior**: Unfilled market orders are discarded (no resting)
+
+### Thread Safety
+
+The order book supports concurrent access via read-write locking:
+
+- **Read operations** (get_book_depth, get_spread, etc.) can run concurrently
+- **Write operations** (process_order, add_order, etc.) get exclusive access
+- **Atomic matching**: The entire matching loop runs under a single write lock
 
 ## Testing
 
@@ -93,14 +103,16 @@ simple_clob/
 ├── trade.py           # Trade dataclass
 ├── orderbook.py       # Order book with bid/ask management
 ├── matching_engine.py # Core matching logic
+├── rwlock.py          # Read-write lock for thread safety
 ├── main.py            # CLI demo
 ├── sample_data.py     # Sample data generator
 └── web.py             # FastAPI web application
 
 tests/
-├── test_order.py      # Order creation and validation tests
-├── test_orderbook.py  # Order book operations tests
-└── test_matching.py   # Matching engine tests
+├── test_order.py       # Order creation and validation tests
+├── test_orderbook.py   # Order book operations tests
+├── test_matching.py    # Matching engine tests
+└── test_concurrency.py # Thread safety stress tests
 
 templates/             # Jinja2 templates for web frontend
 ```
